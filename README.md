@@ -1,5 +1,10 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Employee;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Employee
 {
@@ -12,12 +17,27 @@ namespace Employee
 
     public class Employee
     {
-        public int ID { get; set; }  
-        public string? FirstName { get; set; }  
-        public string? LastName { get; set; }  
-        public string? Position { get; set; }  
-    }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        public string Position { get; set; }
+
+        public Employee(int ident, string firstName, string lastName, string position)
+        {
+            Id = ident; 
+            FirstName = firstName;
+            LastName = lastName;
+            Position = position;
+        }
+    }
     public interface IEmployeeRepository
     {
         Task<Employee> CreateAsync(Employee employee);
@@ -184,3 +204,4 @@ namespace Employee
         }
     }
 }
+
